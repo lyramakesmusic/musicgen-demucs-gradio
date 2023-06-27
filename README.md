@@ -4,7 +4,8 @@ Gradio UI for [this colab](https://colab.research.google.com/drive/1Dlo3Jb8193GA
 
 I wish you luck installing this environment. Here are a few of the commands I had to run (in order!) to get it to work:
 
-```pip install gradio openai
+```
+pip install gradio openai
 
 pip install -U git+https://github.com/facebookresearch/audiocraft#egg=audiocraft
 pip install -U git+https://github.com/facebookresearch/demucs#egg=demucs
