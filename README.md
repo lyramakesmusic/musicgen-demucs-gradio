@@ -2,7 +2,7 @@
 
 Gradio UI for [this colab](https://colab.research.google.com/drive/1Dlo3Jb8193GAWZZzYPF1IPG7h8fiAtKG)
 
-I wish you luck installing this environment. Here are a few of the commands I had to run (in order!) to get it to work:
+I wish you luck installing this cuda environment. Here are a few of the commands I had to run (in order!) to get it to work:
 
 ```
 pip install gradio openai
