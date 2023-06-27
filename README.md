@@ -12,4 +12,4 @@ pip install -U git+https://github.com/facebookresearch/demucs#egg=demucs
 
 pip install torch torchvision torchaudio --pre -f https://download.pytorch.org/whl/nightly/cu121/torch_nightly.html
 
-pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers```
+pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers
