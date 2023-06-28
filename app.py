@@ -67,9 +67,11 @@ def run_musicgen(prompt, model_size='large', length=10):
 
     if not os.path.exists('outputs'):
         os.makedirs('outputs')
+        
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     filename = f"outputs/{prompt.replace(' ', '_')}_{timestamp}.wav"
     sf.write(filename, output, 32000)
+    print(f"saved {filename}")
 
     # return output.squeeze().numpy()
     return filename
