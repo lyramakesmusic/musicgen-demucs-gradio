@@ -72,18 +72,18 @@ def run_musicgen(prompt, model_size='large', length=10, melody_audio=None):
 
     # run model
     print(f"generating {prompt}")
-    if model_size == "melody":
-        melody, sr = torchaudio.load(melody_audio)
-        res = musicgen_model.generate_with_chroma([prompt], melody[None].expand(3, -1, -1), sr, progress=True)
-        output = res.cpu().squeeze().numpy().astype(np.float32)
-    else:
-        res = musicgen_model.generate([prompt], progress=True)
-        output = res.cpu().squeeze().numpy().astype(np.float32)
+
+    # if model_size == "melody":
+    #     melody, sr = torchaudio.load(melody_audio)
+    #     res = musicgen_model.generate_with_chroma([prompt], melody[None].expand(3, -1, -1), sr, progress=True)
+    #     output = res.cpu().squeeze().numpy().astype(np.float32)
+    # else:
+
+    res = musicgen_model.generate([prompt], progress=True)
+    output = res.cpu().squeeze().numpy().astype(np.float32)
 
     if not os.path.exists('outputs'):
         os.makedirs('outputs')
-
-    
         
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     filename = f"outputs/{prompt.replace(' ', '_')}_{timestamp}.wav"
@@ -163,7 +163,7 @@ with demo:
         with gr.Column():
             gr.Markdown("## MusicGen")
             musicgen_prompt = gr.Textbox(label="Musicgen Prompt")
-            model_size = gr.Radio(["large", "medium", "small", "melody"], value="large", label="Model Size")
+            model_size = gr.Radio(["large", "medium", "small"], value="large", label="Model Size")
             melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
             generate_button = gr.Button("Generate Audio")
