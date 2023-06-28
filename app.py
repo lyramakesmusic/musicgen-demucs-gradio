@@ -65,13 +65,13 @@ def run_musicgen(prompt, model_size='large', length=10):
     # load model
     if model_size != loaded_musicgen_model:
         print(f"loading {model_size} model")
-        model = musicgen.MusicGen.get_pretrained(model_size, device='cuda')
-        model.set_generation_params(duration=length)
+        musicgen_model = musicgen.MusicGen.get_pretrained(model_size, device='cuda')
+        musicgen_model.set_generation_params(duration=length)
         loaded_musicgen_model = model_size
 
     # run model
     print(f"generating {prompt}")
-    res = model.generate([prompt], progress=True)
+    res = musicgen_model.generate([prompt], progress=True)
     output = res.cpu().squeeze().numpy().astype(np.float32)
 
     if not os.path.exists('outputs'):
