@@ -7,6 +7,7 @@ import tempfile
 from demucs.separate import main as demucs_main
 import openai
 import datetime
+import os
 
 from audiocraft.models import musicgen
 
@@ -60,7 +61,9 @@ def run_musicgen(prompt, model_size='large', length=10):
     # run model
     res = model.generate([prompt], progress=True)
     output = res.cpu()
-    
+
+    if not os.path.exists('outputs'):
+        os.makedirs('outputs')
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     filename = f"/outputs/{prompt.replace(' ', '_')}_{timestamp}.wav"
     sf.write(filename, output, 32000)
