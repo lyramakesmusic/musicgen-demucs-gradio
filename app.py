@@ -13,6 +13,8 @@ import os
 
 from audiocraft.models import musicgen
 
+loaded_musicgen_model = "None"
+
 def mirror(x):
     return x
 
@@ -57,8 +59,11 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
 def run_musicgen(prompt, model_size='large', length=10):
 
     # load model
-    model = musicgen.MusicGen.get_pretrained(model_size, device='cuda')
-    model.set_generation_params(duration=length)
+    if model_size != loaded_musicgen_model:
+        print(f"loading {model_size} model")
+        model = musicgen.MusicGen.get_pretrained(model_size, device='cuda')
+        model.set_generation_params(duration=length)
+        loaded_musicgen_model = model_size
 
     # run model
     print(f"generating {prompt}")
@@ -74,7 +79,7 @@ def run_musicgen(prompt, model_size='large', length=10):
     print(f"saved {filename}")
 
     # return output.squeeze().numpy()
-    return filename
+    return [filename, filename]
 
 
 # demucs
