@@ -100,9 +100,11 @@ def run_demucs(audio, stem_type='drums'):
     tmp_path = os.path.basename(input_file.name).rsplit('/', 1)[-1].replace('.wav', '')
 
     output_file = f"outputs/separated/htdemucs/{tmp_path}/{stem_type}.wav"
-    rate, output = sf.read(output_file)
-    output = (output * 32767).astype(np.int16)
-    return output.squeeze().numpy()
+    print(output_file)
+    return output_file
+    # rate, output = sf.read(output_file)
+    # output = (output * 32767).astype(np.int16)
+    # return output.squeeze().numpy()
 
 
 demo = gr.Blocks(theme='ParityError/Anime')
