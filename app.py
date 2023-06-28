@@ -36,6 +36,8 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
         {"role": "system", "content": sys_prompt},
         {"role": "user", "content": simple_prompt},
     ]
+
+    print(f"making prompts for {simple_prompt}")
     try:
         response = openai.ChatCompletion.create(
             model="gpt-4" if use_gpt4 else "gpt-3.5-turbo", 
@@ -50,6 +52,7 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
         import ast
         prompts = ast.literal_eval(out_prompts)
     except Exception as e:
+        return f"Cannot parse output as python array: \n{out_prompts}\n{e}"
         print(f"Cannot parse output as python array: \n{out_prompts}\n{e}")
 
     return "\n".join(prompts)
