@@ -87,6 +87,8 @@ def run_demucs(audio, stem_type='drums'):
     elif isinstance(audio, str):
         input_file = audio
     
+    print(input_file.name)
+    
     if not os.path.exists('outputs/separated/htdemucs'):
         os.makedirs('outputs/separated/htdemucs')
 
