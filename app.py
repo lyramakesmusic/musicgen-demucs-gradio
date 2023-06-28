@@ -80,7 +80,7 @@ def run_musicgen(prompt, model_size='large', length=10):
     print(f"saved {filename}")
 
     # return output.squeeze().numpy()
-    return [filename, filename]
+    return filename
 
 
 # demucs
