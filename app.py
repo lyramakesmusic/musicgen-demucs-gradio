@@ -57,6 +57,7 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
 
 # musicgen
 def run_musicgen(prompt, model_size='large', length=10):
+    global loaded_musicgen_model
 
     # load model
     if model_size != loaded_musicgen_model:
