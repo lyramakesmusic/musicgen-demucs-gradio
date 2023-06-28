@@ -174,7 +174,8 @@ with demo:
             generate_button = gr.Button("Generate Audio")
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
 
-            with gr.Box(label="Generation History"):
+            with gr.Box():
+                gr.Markdown("Generation History")
                 generation_history = gr.HTML("<h3>fish</h3> <audio src='outputs/fish_20230628-195310.wav' controls><br>")
 
             # def toggle_melody_audio_vis():
