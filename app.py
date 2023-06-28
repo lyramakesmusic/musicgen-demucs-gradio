@@ -151,4 +151,4 @@ with demo:
     #     toggle_dark = gr.Button(value="Toggle dark mode").style(full_width=False)
     #     toggle_dark.click(None, _js="() => { document.body.classList.toggle('dark'); }")
 
-demo.launch()
+demo.launch(share=True)
