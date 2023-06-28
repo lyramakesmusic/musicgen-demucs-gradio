@@ -90,8 +90,6 @@ def run_musicgen(prompt, model_size='large', length=10, melody_audio=None):
     sf.write(filename, output, 32000)
     print(f"saved {filename}")
 
-    history_html += f"<audio src='{filename}' controls><br>"
-
     # return output.squeeze().numpy()
     return filename
 
