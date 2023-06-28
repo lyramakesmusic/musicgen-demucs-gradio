@@ -61,6 +61,7 @@ def run_musicgen(prompt, model_size='large', length=10):
     model.set_generation_params(duration=length)
 
     # run model
+    print(f"generating {prompt}")
     res = model.generate([prompt], progress=True)
     output = res.cpu()
 
