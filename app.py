@@ -88,7 +88,7 @@ def run_demucs(audio, stem_type='drums'):
         input_file = audio
     
     print(input_file.name)
-    
+
     if not os.path.exists('outputs/separated/htdemucs'):
         os.makedirs('outputs/separated/htdemucs')
 
@@ -97,8 +97,9 @@ def run_demucs(audio, stem_type='drums'):
     demucs_main(shlex.split(demucs_args))
 
     # Load and return the separated track
+    tmp_path = os.path.basename(input_file.name).rsplit('/', 1)[-1].replace('.wav', '')
 
-    output_file = f"outputs/separated/htdemucs/{stem_type}/{stem_type}.wav"
+    output_file = f"outputs/separated/htdemucs/{tmp_path}/{stem_type}.wav"
     rate, output = sf.read(output_file)
     output = (output * 32767).astype(np.int16)
     return output.squeeze().numpy()
