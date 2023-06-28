@@ -16,8 +16,6 @@ from audiocraft.models import musicgen
 musicgen_model = None
 loaded_model_size = "N/A"
 
-history_html = ""
-
 def mirror(x):
     return x
 
@@ -63,7 +61,7 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
 
 # musicgen
 def run_musicgen(prompt, model_size='large', length=10, melody_audio=None):
-    global musicgen_model, loaded_model_size, history_html
+    global musicgen_model, loaded_model_size
 
     # load model
     if model_size != loaded_model_size:
@@ -92,8 +90,7 @@ def run_musicgen(prompt, model_size='large', length=10, melody_audio=None):
     sf.write(filename, output, 32000)
     print(f"saved {filename}")
 
-    history_html += f"<h3>{prompt}</h3><audio src='{filename}' controls><br>"
-    generation_history.value = history_html
+    history_html += f"<audio src='{filename}' controls><br>"
 
     # return output.squeeze().numpy()
     return filename
@@ -173,10 +170,6 @@ with demo:
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
             generate_button = gr.Button("Generate Audio")
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
-
-            with gr.Box():
-                gr.Markdown("Generation History")
-                generation_history = gr.HTML("<h3>fish</h3> <audio src='outputs/fish_20230628-195310.wav' controls><br>")
 
             # def toggle_melody_audio_vis():
             #     melody_audio.visible = False
