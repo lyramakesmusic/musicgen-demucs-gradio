@@ -169,12 +169,12 @@ with demo:
             generate_button = gr.Button("Generate Audio")
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
 
-            def toggle_melody_audio_vis():
-                melody_audio.visible = False
-                if model_size.value == "melody":
-                    melody_audio.visible = True
+            # def toggle_melody_audio_vis():
+            #     melody_audio.visible = False
+            #     if model_size.value == "melody":
+            #         melody_audio.visible = True
 
-            model_size.change(toggle_melody_audio_vis)
+            # model_size.change(toggle_melody_audio_vis)
 
         # Demucs
         with gr.Column():
