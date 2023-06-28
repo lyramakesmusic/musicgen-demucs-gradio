@@ -170,7 +170,7 @@ with demo:
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
 
             with gr.Box(label="Generation History"):
-                generation_history = gr.HTML("<p>fish <audio src='outputs/fish_20230628-195310.wav' controls></p>")
+                generation_history = gr.HTML("<h3>fish</h3> <audio src='outputs/fish_20230628-195310.wav' controls><br>")
 
             # def toggle_melody_audio_vis():
             #     melody_audio.visible = False
