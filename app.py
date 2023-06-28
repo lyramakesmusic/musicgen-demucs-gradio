@@ -60,7 +60,7 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
     
 
 # musicgen
-def run_musicgen(prompt, model_size='large', length=10):
+def run_musicgen(prompt, model_size='large', length=10, melody_audio=None):
     global musicgen_model, loaded_model_size
 
     # load model
@@ -72,11 +72,18 @@ def run_musicgen(prompt, model_size='large', length=10):
 
     # run model
     print(f"generating {prompt}")
-    res = musicgen_model.generate([prompt], progress=True)
-    output = res.cpu().squeeze().numpy().astype(np.float32)
+    if model_size == "melody":
+        melody, sr = torchaudio.load(melody_audio)
+        res = musicgen_model.generate_with_chroma([prompt], melody[None].expand(3, -1, -1), sr, progress=True)
+        output = res.cpu().squeeze().numpy().astype(np.float32)
+    else:
+        res = musicgen_model.generate([prompt], progress=True)
+        output = res.cpu().squeeze().numpy().astype(np.float32)
 
     if not os.path.exists('outputs'):
         os.makedirs('outputs')
+
+    
         
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     filename = f"outputs/{prompt.replace(' ', '_')}_{timestamp}.wav"
@@ -119,7 +126,6 @@ def run_demucs(audio, stem_type='drums'):
     # output = (output * 32767).astype(np.int16)
     # return output.squeeze().numpy()
 
-
 demo = gr.Blocks(theme='ParityError/Anime')
 with demo:
 
@@ -157,10 +163,18 @@ with demo:
         with gr.Column():
             gr.Markdown("## MusicGen")
             musicgen_prompt = gr.Textbox(label="Musicgen Prompt")
-            model_size = gr.Radio(["large", "medium", "small"], value="large", label="Model Size")
+            model_size = gr.Radio(["large", "medium", "small", "melody"], value="large", label="Model Size")
+            melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
             generate_button = gr.Button("Generate Audio")
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
+
+            def toggle_melody_audio_vis():
+                melody_audio.visible = False
+                if model_size.value == "melody":
+                    melody_audio.visible = True
+
+            model_size.change(toggle_melody_audio_vis)
 
         # Demucs
         with gr.Column():
@@ -173,7 +187,7 @@ with demo:
         
 
     prompts_button.click(enhance_prompt, inputs=[simple_prompt, api_key_box, n_prompts, gpt4_checkbox], outputs=prompts_list)
-    generate_button.click(run_musicgen, inputs=[musicgen_prompt, model_size, gen_length], outputs=musicgen_audio)
+    generate_button.click(run_musicgen, inputs=[musicgen_prompt, model_size, gen_length, melody_audio], outputs=musicgen_audio)
     split_musicgen_button.click(run_demucs, inputs=[musicgen_audio, stem_type], outputs=demucs_audio)
     split_uploaded_button.click(run_demucs, inputs=[demucs_in_audio, stem_type], outputs=demucs_audio)
 
