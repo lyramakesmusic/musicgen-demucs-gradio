@@ -25,7 +25,7 @@ def enhance_prompt(simple_prompt, api_key, n_prompts=10, use_gpt4=True):
 here's one possible way a prompt could be formatted:
 'lofi melody loop, A minor, 110 bpm, jazzy chords evoking a feeling of curiosity, relaxing, vinyl recording'
 
-Write {n_prompts} prompts for the given topic in a similar style. be descriptive! only describe the relevant elements - we don't want drums in a melody loop, nor melody or bass in a percussion loop. we also don't need to describe atmosphere for a drum loop. note: the text to music model cannot make vocals, so don't write prompts for with them. Also, for melody loops, make sure to specify 'no drums' in your prompt. I'd like them to be varied and high quality. Format them like this:
+Write {n_prompts} prompts for the given topic in a similar style. be descriptive! only describe the relevant elements - we don't want drums in a melody loop, nor melody or bass in a percussion loop. we also don't need to describe atmosphere for a drum loop. note: the text to music model cannot make vocals, so don't write prompts for with them. Also, for melody loops, you can specify 'no drums' in your prompt. I'd like them to be varied and high quality. Format them like this:
 
 [
     'prompt 1',
