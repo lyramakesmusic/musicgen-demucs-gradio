@@ -164,10 +164,13 @@ with demo:
             gr.Markdown("## MusicGen")
             musicgen_prompt = gr.Textbox(label="Musicgen Prompt")
             model_size = gr.Radio(["large", "medium", "small"], value="large", label="Model Size")
-            melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
+            # melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
             generate_button = gr.Button("Generate Audio")
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
+
+            with gr.Box(label="Generation History"):
+                generation_history = gr.HTML("<p>fish <audio src='outputs/fish_20230628-195310.wav'></p>")
 
             # def toggle_melody_audio_vis():
             #     melody_audio.visible = False
