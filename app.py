@@ -87,13 +87,15 @@ def run_demucs(audio, stem_type='drums'):
     elif isinstance(audio, str):
         input_file = audio
     
+    outpath = 'outputs/separated/htdemucs'
+    if not os.path.exists(outpath):
+        os.makedirs(outpath)
+
     # separate
-    demucs_args = f"-n htdemucs --two-stems {stem_type} {input_file.name}"
+    demucs_args = f"-n htdemucs --two-stems {stem_type} -o {outpath} {input_file.name}"
     demucs_main(shlex.split(demucs_args))
 
     # Load and return the separated track
-    if not os.path.exists('outputs/separated/htdemucs'):
-        os.makedirs('outputs/separated/htdemucs')
 
     output_file = f"outputs/separated/htdemucs/{stem_type}/{stem_type}.wav"
     rate, output = sf.read(output_file)
