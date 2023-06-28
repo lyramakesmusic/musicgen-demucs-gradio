@@ -63,7 +63,7 @@ def run_musicgen(prompt, model_size='large', length=10):
     # run model
     print(f"generating {prompt}")
     res = model.generate([prompt], progress=True)
-    output = res.cpu()
+    output = res.cpu().squeeze()
 
     if not os.path.exists('outputs'):
         os.makedirs('outputs')
