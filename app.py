@@ -88,7 +88,7 @@ def run_demucs(audio, stem_type='drums'):
         input_file = audio
     
     # separate
-    demucs_args = f"--n htdemucs --two-stems {stem_type} {input_file.name}"
+    demucs_args = f"-n htdemucs --two-stems {stem_type} {input_file.name}"
     demucs_main(shlex.split(demucs_args))
 
     # Load and return the separated track
