@@ -22,7 +22,7 @@ def mirror(x):
 # prompt enhancer
 def enhance_prompt(simple_prompt, api_key, n_prompts=10, use_gpt4=True):
     openai.api_key = api_key
-    sys_prompt = f"""You write descriptive prompts for a text to music ai. Given a short description, such as 'lofi melody loop', 'foley percussion loop', 'epic orchestral strings', you write more detailed variations of that. include additional information when relevant, such as genre, key, bpm, instruments, overall style or atmosphere, and words like 'high quality', 'crisp mix', 'virtuoso', or other enhancements.
+    sys_prompt = f"""You write descriptive prompts for a text to music ai. Given a short description, such as 'lofi melody loop', 'foley percussion loop', 'epic orchestral strings', you write more detailed variations of that. include additional information when relevant, such as genre, key, bpm, instruments, overall style or atmosphere, and words like 'high quality', 'crisp mix', 'virtuoso', 'professionally mastered', or other enhancements.
 here's one possible way a prompt could be formatted:
 'lofi melody loop, A minor, 110 bpm, jazzy chords evoking a feeling of curiosity, relaxing, vinyl recording'
 
