@@ -60,15 +60,23 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
     
 
 # musicgen
-def run_musicgen(prompt, model_size='large', length=10, melody_audio=None):
+def run_musicgen(prompt, model_size='large', length=10, custom_model_path = None, melody_audio=None):
     global musicgen_model, loaded_model_size
 
     # load model
-    if model_size != loaded_model_size:
+    if musicgen_model is None:
         print(f"loading {model_size} model")
         musicgen_model = musicgen.MusicGen.get_pretrained(model_size, device='cuda')
         musicgen_model.set_generation_params(duration=length)
-        loaded_model_size = model_size
+
+    if model_size != loaded_model_size or musicgen_model is None:
+      if custom_model_path is not None:
+        print(f"loading custom model from {custom_model_path}")
+        musicgen_model.lm.load_state_dict(torch.load(custom_model_path))
+        musicgen_model.set_generation_params(duration=length)
+
+    if gen_length is not length:
+      musicgen_model.set_generation_params(duration=length)
 
     # run model
     print(f"generating {prompt}")
@@ -164,6 +172,7 @@ with demo:
             gr.Markdown("## MusicGen")
             musicgen_prompt = gr.Textbox(label="Musicgen Prompt")
             model_size = gr.Radio(["large", "medium", "small"], value="large", label="Model Size")
+            custom_model_path = gr.Textbox(label="Or, path to finetuned MusicGen checkpoint")
             # melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
             generate_button = gr.Button("Generate Audio")
