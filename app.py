@@ -61,7 +61,7 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
     
 
 # musicgen
-def run_musicgen(prompt, model_size='large', length=10, custom_model_path = None, melody_audio=None):
+def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, melody_audio=None):
     global musicgen_model, loaded_model_size
 
     # load model
@@ -172,7 +172,7 @@ with demo:
         with gr.Column():
             gr.Markdown("## MusicGen")
             musicgen_prompt = gr.Textbox(label="Musicgen Prompt")
-            model_size = gr.Radio(["large", "medium", "small", "melody"], value="large", label="Model Size")
+            model_size = gr.Radio(["large", "medium", "small", "melody"], value="melody", label="Model Size")
             custom_model_path = gr.Textbox(label="Or, path to finetuned MusicGen checkpoint")
             # melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
