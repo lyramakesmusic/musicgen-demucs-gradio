@@ -171,7 +171,7 @@ with demo:
         with gr.Column():
             gr.Markdown("## MusicGen")
             musicgen_prompt = gr.Textbox(label="Musicgen Prompt")
-            model_size = gr.Radio(["large", "medium", "small"], value="large", label="Model Size")
+            model_size = gr.Radio(["large", "medium", "small", "melody"], value="large", label="Model Size")
             custom_model_path = gr.Textbox(label="Or, path to finetuned MusicGen checkpoint")
             # melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
