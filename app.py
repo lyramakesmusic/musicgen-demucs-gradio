@@ -71,7 +71,7 @@ def run_musicgen(prompt, model_size='large', length=10, custom_model_path = None
         musicgen_model.set_generation_params(duration=length)
 
     if model_size != loaded_model_size or musicgen_model is None:
-      if custom_model_path is not None:
+      if custom_model_path is not "":
         print(f"loading custom model from {custom_model_path}")
         musicgen_model.lm.load_state_dict(torch.load(custom_model_path))
         musicgen_model.set_generation_params(duration=length)
