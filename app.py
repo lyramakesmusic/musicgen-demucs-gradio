@@ -12,6 +12,7 @@ import datetime
 import os
 
 from audiocraft.models import musicgen
+import torch
 
 musicgen_model = None
 loaded_model_size = "N/A"
