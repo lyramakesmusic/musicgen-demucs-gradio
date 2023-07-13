@@ -196,7 +196,7 @@ with demo:
         
 
     prompts_button.click(enhance_prompt, inputs=[simple_prompt, api_key_box, n_prompts, gpt4_checkbox], outputs=prompts_list)
-    generate_button.click(run_musicgen, inputs=[musicgen_prompt, model_size, gen_length], outputs=musicgen_audio)
+    generate_button.click(run_musicgen, inputs=[musicgen_prompt, model_size, gen_length, custom_model_path], outputs=musicgen_audio)
     split_musicgen_button.click(run_demucs, inputs=[musicgen_audio, stem_type], outputs=demucs_audio)
     split_uploaded_button.click(run_demucs, inputs=[demucs_in_audio, stem_type], outputs=demucs_audio)
 
