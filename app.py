@@ -20,6 +20,12 @@ loaded_model_size = "N/A"
 def mirror(x):
     return x
 
+def normalize_audio(audio_data):
+    audio_data = audio_data.astype(np.float32)
+    max_value = np.max(np.abs(audio_data))
+    audio_data /= max_value
+    return audio_data
+
 # prompt enhancer
 def enhance_prompt(simple_prompt, api_key, n_prompts=10, use_gpt4=True):
     openai.api_key = api_key
