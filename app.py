@@ -93,8 +93,8 @@ def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, 
         cut_size = 0
     
         globalSR, sample = input_audio[0], input_audio[1]
-        sample = normalize_audio(sampleM)
-        sample = torch.from_numpy(sampleM).t()
+        sample = normalize_audio(sample)
+        sample = torch.from_numpy(sample).t()
         if sample.dim() == 1:
             sample = sample.unsqueeze(0)
         sample_length = sample.shape[sample.dim() - 1] / globalSR
