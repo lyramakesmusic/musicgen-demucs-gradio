@@ -107,7 +107,7 @@ def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, 
         res = musicgen_model.generate_continuation(prompt=sample, prompt_sample_rate=globalSR)
         output = res.cpu().squeeze().numpy().astype(np.float32)
 
-    if use_sample_prompt = "text (no sample)":
+    if use_sample_prompt == "text (no sample)":
         res = musicgen_model.generate([prompt], progress=True)
         output = res.cpu().squeeze().numpy().astype(np.float32)
 
