@@ -14,6 +14,8 @@ import os
 from audiocraft.models import musicgen
 import torch
 
+import julius
+
 musicgen_model = None
 loaded_model_size = "N/A"
 
@@ -25,7 +27,14 @@ def normalize_audio(audio_data):
     max_value = np.max(np.abs(audio_data))
     audio_data /= max_value
     return audio_data
-
+    
+def convert_audio(wav: torch.Tensor, from_rate: float, to_rate: float, to_channels: int) -> torch.Tensor:
+    """Convert audio to new sample rate and number of audio channels.
+    """
+    wav = julius.resample_frac(wav, int(from_rate), int(to_rate))
+    wav = convert_audio_channels(wav, to_channels)
+    return wav
+                      
 # prompt enhancer
 def enhance_prompt(simple_prompt, api_key, n_prompts=10, use_gpt4=True):
     openai.api_key = api_key
@@ -91,6 +100,7 @@ def run_musicgen(prompt, model_size='large', length=10, use_sample_prompt="text 
             musicgen_model = musicgen.MusicGen.get_pretrained("melody", device='cuda')
             musicgen_model.set_generation_params(duration=length)
         melody, sr = torchaudio.load(melody_audio)
+        melody = convert_audio(melody, sr, 32000, 1)
         res = musicgen_model.generate_with_chroma([prompt], melody[None].expand(3, -1, -1), sr, progress=True)
         output = res.cpu().squeeze().numpy().astype(np.float32)
 
@@ -109,7 +119,7 @@ def run_musicgen(prompt, model_size='large', length=10, use_sample_prompt="text 
         if sample_length > maximum_size:
             cut_size = sample_length - maximum_size
             sample = sample[..., :int(sample_sr * cut_size)]
-            
+        sample = convert_audio(sample, sample_sr, 32000, 1)
         print(sample.shape, sample_sr)
         
         musicgen_model.set_generation_params(duration=(sample_length - cut_size))
