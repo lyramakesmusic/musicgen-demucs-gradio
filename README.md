@@ -6,13 +6,13 @@ Gradio UI for [this colab](https://colab.research.google.com/drive/1Dlo3Jb8193GA
 
 ## Todo:
 
+- allow audio prompting for melody and continuations
+- 
 - multiple audio file display for musicgen and demucs
 
 - allow editing system prompt
 
-- enable melody model
-
-- allow audio prompting and infinite generations per [this fork](https://github.com/GrandaddyShmax/audiocraft_plus)
+- allow infinite generations per [this fork](https://github.com/GrandaddyShmax/audiocraft_plus)
 
 - find and integrate denoiser model
 
