@@ -10,10 +10,4 @@ Gradio UI for [this colab](https://colab.research.google.com/drive/1Dlo3Jb8193GA
 
 - multiple audio file display for musicgen and demucs
 
-- allow editing system prompt
-
 - allow infinite generations per [this fork](https://github.com/GrandaddyShmax/audiocraft_plus)
-
-- find and integrate denoiser model
-
-- dance diffusion?
