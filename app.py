@@ -91,10 +91,15 @@ def run_musicgen(prompt, model_size='large', length=10, use_sample_prompt="text 
     if use_sample_prompt == "conditioning":
         maximum_size = 29.5
         cut_size = 0
+
+        print(input_audio.shape)
     
         globalSR, sample = input_audio[0], input_audio[1]
         sample = normalize_audio(sample)
         sample = torch.from_numpy(sample).t()
+
+        print(sample.shape)
+        
         if sample.dim() == 1:
             sample = sample.unsqueeze(0)
         sample_length = sample.shape[sample.dim() - 1] / globalSR
@@ -106,6 +111,8 @@ def run_musicgen(prompt, model_size='large', length=10, use_sample_prompt="text 
         musicgen_model.set_generation_params(duration=(sample_length - cut_size))
         res = musicgen_model.generate_continuation(prompt=sample, prompt_sample_rate=globalSR)
         output = res.cpu().squeeze().numpy().astype(np.float32)
+
+        print(output.shape)
 
     if use_sample_prompt == "text (no sample)":
         res = musicgen_model.generate([prompt], progress=True)
