@@ -68,16 +68,12 @@ def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, 
     if musicgen_model is None:
         print(f"loading {model_size} model")
         musicgen_model = musicgen.MusicGen.get_pretrained(model_size, device='cuda')
-        musicgen_model.set_generation_params(duration=length)
 
-    if model_size != loaded_model_size or musicgen_model is None:
-      if custom_model_path != "":
-        print(f"loading custom model from {custom_model_path}")
-        musicgen_model.lm.load_state_dict(torch.load(custom_model_path))
-        musicgen_model.set_generation_params(duration=length)
+    if custom_model_path != "":
+      print(f"loading custom model from {custom_model_path}")
+      musicgen_model.lm.load_state_dict(torch.load(custom_model_path))
 
-    if gen_length is not length:
-      musicgen_model.set_generation_params(duration=length)
+    musicgen_model.set_generation_params(duration=length)
 
     # run model
     print(f"generating {prompt}")
