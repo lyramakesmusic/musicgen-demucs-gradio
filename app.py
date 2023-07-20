@@ -28,9 +28,21 @@ def normalize_audio(audio_data):
     audio_data /= max_value
     return audio_data
     
+def convert_audio_channels(wav: torch.Tensor, channels: int = 2) -> torch.Tensor:
+    *shape, src_channels, length = wav.shape
+    if src_channels == channels:
+        pass
+    elif channels == 1:
+        wav = wav.mean(dim=-2, keepdim=True)
+    elif src_channels == 1:
+        wav = wav.expand(*shape, channels, length)
+    elif src_channels >= channels:
+        wav = wav[..., :channels, :]
+    else:
+        raise ValueError('The audio file has less channels than requested but is not mono.')
+    return wav
+    
 def convert_audio(wav: torch.Tensor, from_rate: float, to_rate: float, to_channels: int) -> torch.Tensor:
-    """Convert audio to new sample rate and number of audio channels.
-    """
     wav = julius.resample_frac(wav, int(from_rate), int(to_rate))
     wav = convert_audio_channels(wav, to_channels)
     return wav
