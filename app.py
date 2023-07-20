@@ -61,11 +61,11 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
     
 
 # musicgen
-def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, melody_audio=None, use_sample_prompt="text (no audio)", input_audio=None):
+def run_musicgen(prompt, model_size='large', length=10, use_sample_prompt="text (no audio)",  custom_model_path=None, input_audio=None):
     global musicgen_model, loaded_model_size
 
     # load model
-    if musicgen_model is None:
+    if musicgen_model is None or model_size != loaded_model_size:
         print(f"loading {model_size} model")
         musicgen_model = musicgen.MusicGen.get_pretrained(model_size, device='cuda')
 
