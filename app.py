@@ -88,7 +88,7 @@ def run_musicgen(prompt, model_size='large', length=10, use_sample_prompt="text 
         res = musicgen_model.generate_with_chroma([prompt], melody[None].expand(3, -1, -1), sr, progress=True)
         output = res.cpu().squeeze().numpy().astype(np.float32)
 
-    if use_sample_prompt == "conditioning":
+    if use_sample_prompt == "continuation":
         maximum_size = 29.5
         cut_size = 0
 
