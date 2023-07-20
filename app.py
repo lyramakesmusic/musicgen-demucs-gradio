@@ -61,7 +61,7 @@ Write {n_prompts} prompts for the given topic in a similar style. be descriptive
     
 
 # musicgen
-def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, melody_audio=None):
+def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, melody_audio=None, use_sample_prompt="text (no audio)", input_audio=None):
     global musicgen_model, loaded_model_size
 
     # load model
@@ -78,14 +78,38 @@ def run_musicgen(prompt, model_size='large', length=10, custom_model_path=None, 
     # run model
     print(f"generating {prompt}")
 
-    # if model_size == "melody":
-    #     melody, sr = torchaudio.load(melody_audio)
-    #     res = musicgen_model.generate_with_chroma([prompt], melody[None].expand(3, -1, -1), sr, progress=True)
-    #     output = res.cpu().squeeze().numpy().astype(np.float32)
-    # else:
+    output = None
 
-    res = musicgen_model.generate([prompt], progress=True)
-    output = res.cpu().squeeze().numpy().astype(np.float32)
+    if use_sample_prompt == "melody":
+        if model_size != "melody":
+            musicgen_model = musicgen.MusicGen.get_pretrained("melody", device='cuda')
+            musicgen_model.set_generation_params(duration=length)
+        melody, sr = torchaudio.load(melody_audio)
+        res = musicgen_model.generate_with_chroma([prompt], melody[None].expand(3, -1, -1), sr, progress=True)
+        output = res.cpu().squeeze().numpy().astype(np.float32)
+
+    if use_sample_prompt == "conditioning":
+        maximum_size = 29.5
+        cut_size = 0
+    
+        globalSR, sample = input_audio[0], input_audio[1]
+        sample = normalize_audio(sampleM)
+        sample = torch.from_numpy(sampleM).t()
+        if sample.dim() == 1:
+            sample = sample.unsqueeze(0)
+        sample_length = sample.shape[sample.dim() - 1] / globalSR
+    
+        if sample_length > maximum_size:
+            cut_size = sample_length - maximum_size
+            sample = sample[..., :int(globalSR * cut_size)]
+
+        musicgen_model.set_generation_params(duration=(sample_length - cut_size))
+        res = musicgen_model.generate_continuation(prompt=sample, prompt_sample_rate=globalSR)
+        output = res.cpu().squeeze().numpy().astype(np.float32)
+
+    if use_sample_prompt = "text (no sample)":
+        res = musicgen_model.generate([prompt], progress=True)
+        output = res.cpu().squeeze().numpy().astype(np.float32)
 
     if not os.path.exists('outputs'):
         os.makedirs('outputs')
@@ -170,7 +194,8 @@ with demo:
             musicgen_prompt = gr.Textbox(label="Musicgen Prompt")
             model_size = gr.Radio(["large", "medium", "small", "melody"], value="melody", label="Model Size")
             custom_model_path = gr.Textbox(label="Or, path to finetuned MusicGen checkpoint")
-            # melody_audio = gr.Audio(type="numpy", label="Melody for conditioning", visible=False)
+            input_audio = gr.Audio(type="numpy", label="Input sample (optional)", visible=True)
+            use_sample_prompt = gr.Radio(["text (no sample)", "melody", "continuation", value="text (no sample)", label="Use sample conditioning?"]
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
             generate_button = gr.Button("Generate Audio")
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
@@ -193,7 +218,7 @@ with demo:
         
 
     prompts_button.click(enhance_prompt, inputs=[simple_prompt, api_key_box, n_prompts, gpt4_checkbox], outputs=prompts_list)
-    generate_button.click(run_musicgen, inputs=[musicgen_prompt, model_size, gen_length, custom_model_path], outputs=musicgen_audio)
+    generate_button.click(run_musicgen, inputs=[musicgen_prompt, model_size, gen_length, use_sample_prompt, custom_model_path, input_audio], outputs=musicgen_audio)
     split_musicgen_button.click(run_demucs, inputs=[musicgen_audio, stem_type], outputs=demucs_audio)
     split_uploaded_button.click(run_demucs, inputs=[demucs_in_audio, stem_type], outputs=demucs_audio)
 
