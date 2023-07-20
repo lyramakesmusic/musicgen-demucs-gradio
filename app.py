@@ -195,7 +195,7 @@ with demo:
             model_size = gr.Radio(["large", "medium", "small", "melody"], value="melody", label="Model Size")
             custom_model_path = gr.Textbox(label="Or, path to finetuned MusicGen checkpoint")
             input_audio = gr.Audio(type="numpy", label="Input sample (optional)", visible=True)
-            use_sample_prompt = gr.Radio(["text (no sample)", "melody", "continuation"], value="text (no sample)", label="Use sample conditioning?"]
+            use_sample_prompt = gr.Radio(["text (no sample)", "melody", "continuation"], value="text (no sample)", label="Use sample conditioning?")
             gen_length = gr.Slider(2, 30, value=10, label="Generation Length (seconds)")
             generate_button = gr.Button("Generate Audio")
             musicgen_audio = gr.Audio(type="numpy", label="Musicgen Output", interactive=False)
